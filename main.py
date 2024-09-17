@@ -32,7 +32,7 @@ class App(ctk.CTk):
         # HIDE THE IMAGE LOADER.
         self.loader.grid_forget()
         # OPEN THE IMAGE EDITOR.
-        self.menu = Menu(self, self.binding_source)
+        self.menu = Menu(self, self.binding_source, path)
         self.editor = ImageEditor(self, self.resize_image)
         self.closer = CloseEditor(self, self.close_editor)
 

@@ -1,9 +1,10 @@
 import customtkinter as ctk
+from os.path import dirname, basename, splitext
 from panels import *
 
 
 class Menu(ctk.CTkTabview):
-    def __init__(self, parent, binding_source):
+    def __init__(self, parent, binding_source, image_path):
         super().__init__(master=parent)
         self.grid(column=0, row=0, sticky=ctk.NSEW, padx=10, pady=10)
         # TABS.
@@ -15,7 +16,7 @@ class Menu(ctk.CTkTabview):
         PositionFrame(self.tab("POSITION"), binding_source["POSITION"])
         ColourFrame(self.tab("COLOUR"), binding_source["COLOUR"])
         EffectFrame(self.tab("EFFECT"), binding_source["EFFECT"])
-        ExportFrame(self.tab("EXPORT"))
+        ExportFrame(self.tab("EXPORT"), image_path)
 
 
 class PositionFrame(ctk.CTkFrame):
@@ -72,6 +73,18 @@ class EffectFrame(ctk.CTkFrame):
 
 
 class ExportFrame(ctk.CTkFrame):
-    def __init__(self, parent):
+    def __init__(self, parent, image_path):
         super().__init__(master=parent, fg_color="transparent")
         self.pack(expand=ctk.TRUE, fill=ctk.BOTH)
+        # PATH PROCESS.
+        path_name = dirname(image_path)
+        file_name, extension = splitext(basename(image_path))
+        file_name += "_PROCESSED"
+        extension = extension.removeprefix(".")
+        # DATA CONTROL.
+        self.binding_file_name = ctk.StringVar(value=file_name)
+        self.binding_extension = ctk.StringVar(value=extension)
+        self.binding_file_path = ctk.StringVar(value=path_name)
+        # WIDGET.
+        FileNamePanel(self, self.binding_file_name, self.binding_extension)
+        FilePathPanel(self, self.binding_file_path)

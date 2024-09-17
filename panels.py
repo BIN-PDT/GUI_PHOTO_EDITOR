@@ -98,3 +98,87 @@ class ResetButton(ctk.CTkButton):
     def update_data(self, data_bindings):
         for data_binding in data_bindings:
             data_binding[0].set(data_binding[1])
+
+
+class FileNamePanel(Panel):
+    def __init__(self, parent, binding_file_name, binding_extension):
+        super().__init__(parent)
+        # DATA.
+        self.binding_file_name = binding_file_name
+        self.binding_extension = binding_extension
+        self.binding_file_name.trace("w", self.update_output)
+        self.binding_extension.trace("w", self.update_output)
+        font_main = ctk.CTkFont(MAIN_FONT, 14)
+        font_path = ctk.CTkFont(PATH_FONT, 14)
+        # WIDGETS.
+        ctk.CTkEntry(
+            master=self,
+            height=36,
+            font=font_path,
+            justify=ctk.CENTER,
+            textvariable=self.binding_file_name,
+        ).pack(fill=ctk.X, padx=20, pady=10)
+
+        extension_frame = ctk.CTkFrame(self, fg_color="transparent")
+        ctk.CTkRadioButton(
+            master=extension_frame,
+            value="png",
+            text="PNG",
+            font=font_main,
+            radiobutton_width=10,
+            radiobutton_height=10,
+            border_width_checked=2,
+            border_width_unchecked=2,
+            variable=self.binding_extension,
+        ).pack(side=ctk.LEFT, expand=ctk.TRUE, fill=ctk.X)
+
+        ctk.CTkRadioButton(
+            master=extension_frame,
+            value="jpg",
+            text="JPG",
+            font=font_main,
+            radiobutton_width=10,
+            radiobutton_height=10,
+            border_width_checked=2,
+            border_width_unchecked=2,
+            variable=self.binding_extension,
+        ).pack(side=ctk.LEFT, expand=ctk.TRUE, fill=ctk.X)
+        extension_frame.pack(expand=ctk.TRUE, fill=ctk.X, padx=20, pady=5)
+
+        self.output = ctk.CTkLabel(master=self, height=36, font=font_path)
+        self.output.pack(padx=20, pady=5)
+        # FIRST PROCESS.
+        self.update_output()
+
+    def update_output(self, *args):
+        if file_name := self.binding_file_name.get():
+            full_path = f"{file_name.replace(' ', '_')}.{self.binding_extension.get()}"
+            self.output.configure(text=full_path)
+        else:
+            self.output.configure(text="")
+
+
+class FilePathPanel(Panel):
+    def __init__(self, parent, binding_file_path):
+        super().__init__(parent)
+        # DATA.
+        self.binding_file_path = binding_file_path
+        # WIDGETS.
+        ctk.CTkButton(
+            master=self,
+            text="OPEN EXPLORER",
+            font=ctk.CTkFont(MAIN_FONT, 14),
+            command=self.open_dialog,
+        ).pack(padx=20, pady=10)
+
+        self.output = ctk.CTkEntry(
+            master=self,
+            height=36,
+            font=ctk.CTkFont(PATH_FONT, 14),
+            justify=ctk.CENTER,
+            textvariable=self.binding_file_path,
+        )
+        self.output.pack(expand=ctk.TRUE, fill=ctk.X, padx=20, pady=10)
+
+    def open_dialog(self):
+        self.binding_file_path.set(ctk.filedialog.askdirectory())

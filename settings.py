@@ -1,4 +1,5 @@
 MAIN_FONT = "Stencil"
+PATH_FONT = "Courier New"
 # COLORS.
 BLACK = "#000"
 WHITE = "#FFF"
