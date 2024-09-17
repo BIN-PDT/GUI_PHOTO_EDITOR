@@ -106,8 +106,8 @@ class FileNamePanel(Panel):
         # DATA.
         self.binding_file_name = binding_file_name
         self.binding_extension = binding_extension
-        self.binding_file_name.trace("w", self.update_output)
-        self.binding_extension.trace("w", self.update_output)
+        self.binding_file_name.trace_add("write", self.update_output)
+        self.binding_extension.trace_add("write", self.update_output)
         font_main = ctk.CTkFont(MAIN_FONT, 14)
         font_path = ctk.CTkFont(PATH_FONT, 14)
         # WIDGETS.

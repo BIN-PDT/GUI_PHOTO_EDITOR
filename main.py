@@ -64,7 +64,7 @@ class App(ctk.CTk):
         # TRACING.
         for data_source in self.binding_source.values():
             for binding_data in data_source.values():
-                binding_data.trace(ctk.W, self.manipulate_image)
+                binding_data.trace_add("write", self.manipulate_image)
 
     def manipulate_image(self, *args):
         self.image = self.original.copy()
