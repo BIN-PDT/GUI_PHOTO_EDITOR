@@ -2,6 +2,7 @@ import customtkinter as ctk
 from PIL import Image, ImageTk
 from settings import *
 from widgets import *
+from menu import Menu
 
 
 class App(ctk.CTk):
@@ -29,6 +30,7 @@ class App(ctk.CTk):
         # HIDE THE IMAGE LOADER.
         self.loader.grid_forget()
         # OPEN THE IMAGE EDITOR.
+        self.menu = Menu(self)
         self.editor = ImageEditor(self, self.resize_image)
         self.closer = CloseEditor(self, self.close_editor)
 
@@ -60,6 +62,7 @@ class App(ctk.CTk):
 
     def close_editor(self):
         # HIDE THE IMAGE EDITOR.
+        self.menu.grid_forget()
         self.editor.grid_forget()
         self.closer.place_forget()
         # OPEN THE IMAGE LOADER.
