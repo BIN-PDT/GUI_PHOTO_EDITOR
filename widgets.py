@@ -26,7 +26,7 @@ class ImageLoader(ctk.CTkFrame):
 
 
 class ImageEditor(ctk.CTkCanvas):
-    def __init__(self, parent):
+    def __init__(self, parent, resize_image):
         super().__init__(
             master=parent,
             background=CANVAS_BG,
@@ -35,3 +35,5 @@ class ImageEditor(ctk.CTkCanvas):
             relief=ctk.RIDGE,
         )
         self.grid(row=0, column=1, sticky=ctk.NSEW, padx=10, pady=10)
+        # EVENT.
+        self.bind("<Configure>", resize_image)
