@@ -23,3 +23,15 @@ class ImageLoader(ctk.CTkFrame):
             filetypes=[("Image", "*.png *.jpg *.jpeg")],
         )
         self.load_image(path)
+
+
+class ImageEditor(ctk.CTkCanvas):
+    def __init__(self, parent):
+        super().__init__(
+            master=parent,
+            background=CANVAS_BG,
+            bd=0,
+            highlightthickness=0,
+            relief=ctk.RIDGE,
+        )
+        self.grid(row=0, column=1, sticky=ctk.NSEW, padx=10, pady=10)
