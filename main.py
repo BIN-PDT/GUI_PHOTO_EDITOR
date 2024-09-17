@@ -54,10 +54,12 @@ class App(ctk.CTk):
                 "GRAYSCALE": ctk.BooleanVar(value=DEFAULT_GRAYSCALE),
                 "INVERT": ctk.BooleanVar(value=DEFAULT_INVERT),
                 "VIBRANCE": ctk.DoubleVar(value=DEFAULT_VIBRANCE),
+                "SHARPNESS": ctk.DoubleVar(value=DEFAULT_SHARPNESS),
+                "CONTRAST": ctk.DoubleVar(value=DEFAULT_COLOR_CONTRAST),
             },
             "EFFECT": {
                 "BLUR": ctk.DoubleVar(value=DEFAULT_BLUR),
-                "CONTRAST": ctk.IntVar(value=DEFUALT_CONTRAST),
+                "CONTRAST": ctk.IntVar(value=DEFAULT_EFFECT_CONTRAST),
                 "EFFECT": ctk.StringVar(value=EFFECT_OPTIONS[0]),
             },
         }
@@ -97,6 +99,16 @@ class App(ctk.CTk):
         if value != DEFAULT_VIBRANCE:
             ENHANCER = ImageEnhance.Color(self.image)
             self.image = ENHANCER.enhance(value)
+        # SHARPNESS.
+        value = self.binding_source["COLOUR"]["SHARPNESS"].get()
+        if value != DEFAULT_SHARPNESS:
+            ENHANCER = ImageEnhance.Sharpness(self.image)
+            self.image = ENHANCER.enhance(value)
+        # COLOR CONTRAST.
+        value = self.binding_source["COLOUR"]["CONTRAST"].get()
+        if value != DEFAULT_COLOR_CONTRAST:
+            ENHANCER = ImageEnhance.Contrast(self.image)
+            self.image = ENHANCER.enhance(value)
         # GRAYSCALE.
         if self.binding_source["COLOUR"]["GRAYSCALE"].get():
             self.image = ImageOps.grayscale(self.image)
@@ -107,9 +119,9 @@ class App(ctk.CTk):
         value = self.binding_source["EFFECT"]["BLUR"].get()
         if value != DEFAULT_BLUR:
             self.image = self.image.filter(ImageFilter.GaussianBlur(value))
-        # CONTRAST.
+        # EFFECT CONTRAST.
         value = self.binding_source["EFFECT"]["CONTRAST"].get()
-        if value != DEFUALT_CONTRAST:
+        if value != DEFAULT_EFFECT_CONTRAST:
             self.image = self.image.filter(ImageFilter.UnsharpMask(value))
         # EFFECTS.
         match self.binding_source["EFFECT"]["EFFECT"].get():
@@ -123,6 +135,14 @@ class App(ctk.CTk):
                 self.image = self.image.filter(ImageFilter.CONTOUR)
             case "EDGE ENHANCE":
                 self.image = self.image.filter(ImageFilter.EDGE_ENHANCE_MORE)
+            case "BLUR":
+                self.image = self.image.filter(ImageFilter.BLUR)
+            case "DETAIL":
+                self.image = self.image.filter(ImageFilter.DETAIL)
+            case "SHARPEN":
+                self.image = self.image.filter(ImageFilter.SHARPEN)
+            case "SMOOTH":
+                self.image = self.image.filter(ImageFilter.SMOOTH_MORE)
         # SHOW IMAGE.
         self.show_image()
 

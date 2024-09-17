@@ -47,12 +47,16 @@ class ColourFrame(ctk.CTkFrame):
         )
         SliderPanel(self, "BRIGHTNESS", 0, 5, data_source["BRIGHTNESS"])
         SliderPanel(self, "VIBRANCE", 0, 5, data_source["VIBRANCE"])
+        SliderPanel(self, "SHARPNESS", 0, 5, data_source["SHARPNESS"])
+        SliderPanel(self, "CONTRAST", 0, 5, data_source["CONTRAST"])
         ResetButton(
             self,
             (data_source["GRAYSCALE"], DEFAULT_GRAYSCALE),
             (data_source["INVERT"], DEFAULT_INVERT),
             (data_source["BRIGHTNESS"], DEFAULT_BRIGHTNESS),
             (data_source["VIBRANCE"], DEFAULT_VIBRANCE),
+            (data_source["SHARPNESS"], DEFAULT_SHARPNESS),
+            (data_source["CONTRAST"], DEFAULT_COLOR_CONTRAST),
         )
 
 
@@ -68,7 +72,7 @@ class EffectFrame(ctk.CTkFrame):
             self,
             (data_source["EFFECT"], EFFECT_OPTIONS[0]),
             (data_source["BLUR"], DEFAULT_BLUR),
-            (data_source["CONTRAST"], DEFUALT_CONTRAST),
+            (data_source["CONTRAST"], DEFAULT_EFFECT_CONTRAST),
         )
 
 
