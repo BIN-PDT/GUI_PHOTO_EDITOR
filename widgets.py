@@ -37,3 +37,19 @@ class ImageEditor(ctk.CTkCanvas):
         self.grid(row=0, column=1, sticky=ctk.NSEW, padx=10, pady=10)
         # EVENT.
         self.bind("<Configure>", resize_image)
+
+
+class CloseEditor(ctk.CTkButton):
+    def __init__(self, parent, close_editor):
+        super().__init__(
+            master=parent,
+            width=50,
+            height=50,
+            text="X",
+            text_color=WHITE,
+            font=ctk.CTkFont(MAIN_FONT, 20),
+            fg_color="transparent",
+            hover_color=CLOSE_RED,
+            command=close_editor,
+        )
+        self.place(relx=0.99, rely=0.01, anchor=ctk.NE)

@@ -30,6 +30,7 @@ class App(ctk.CTk):
         self.loader.grid_forget()
         # OPEN THE IMAGE EDITOR.
         self.editor = ImageEditor(self, self.resize_image)
+        self.closer = CloseEditor(self, self.close_editor)
 
     def resize_image(self, event):
         # CURRENT RATIO.
@@ -56,6 +57,13 @@ class App(ctk.CTk):
         self.editor.create_image(
             self.canvas_width / 2, self.canvas_height / 2, image=self.image_tk
         )
+
+    def close_editor(self):
+        # HIDE THE IMAGE EDITOR.
+        self.editor.grid_forget()
+        self.closer.place_forget()
+        # OPEN THE IMAGE LOADER.
+        self.loader = ImageLoader(self, self.load_image)
 
 
 if __name__ == "__main__":
