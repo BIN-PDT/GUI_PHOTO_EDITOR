@@ -82,3 +82,19 @@ class DropDownPanel(ctk.CTkOptionMenu):
             variable=data_binding,
         )
         self.pack(fill=ctk.X, padx=8, pady=4)
+
+
+class ResetButton(ctk.CTkButton):
+    def __init__(self, parent, *data_bindings):
+        super().__init__(
+            master=parent,
+            height=32,
+            text="RESET",
+            font=ctk.CTkFont(MAIN_FONT, 14),
+            command=lambda: self.update_data(data_bindings),
+        )
+        self.pack(side=ctk.BOTTOM, pady=10)
+
+    def update_data(self, data_bindings):
+        for data_binding in data_bindings:
+            data_binding[0].set(data_binding[1])
