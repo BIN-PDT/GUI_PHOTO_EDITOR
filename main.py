@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from PIL import Image, ImageTk, ImageOps
+from PIL import Image, ImageTk, ImageOps, ImageEnhance, ImageFilter
 from settings import *
 from widgets import *
 from menu import Menu
@@ -82,6 +82,42 @@ class App(ctk.CTk):
             case "BOTH":
                 self.image = ImageOps.mirror(self.image)
                 self.image = ImageOps.flip(self.image)
+        # BRIGHTNESS.
+        value = self.binding_source["COLOUR"]["BRIGHTNESS"].get()
+        if value != DEFAULT_BRIGHTNESS:
+            ENHANCER = ImageEnhance.Brightness(self.image)
+            self.image = ENHANCER.enhance(value)
+        # VIBRANCE.
+        value = self.binding_source["COLOUR"]["VIBRANCE"].get()
+        if value != DEFAULT_VIBRANCE:
+            ENHANCER = ImageEnhance.Color(self.image)
+            self.image = ENHANCER.enhance(value)
+        # GRAYSCALE.
+        if self.binding_source["COLOUR"]["GRAYSCALE"].get():
+            self.image = ImageOps.grayscale(self.image)
+        # INVERT.
+        if self.binding_source["COLOUR"]["INVERT"].get():
+            self.image = ImageOps.invert(self.image)
+        # BLUR.
+        value = self.binding_source["EFFECT"]["BLUR"].get()
+        if value != DEFAULT_BLUR:
+            self.image = self.image.filter(ImageFilter.GaussianBlur(value))
+        # CONTRAST.
+        value = self.binding_source["EFFECT"]["CONTRAST"].get()
+        if value != DEFUALT_CONTRAST:
+            self.image = self.image.filter(ImageFilter.UnsharpMask(value))
+        # EFFECTS.
+        match self.binding_source["EFFECT"]["EFFECT"].get():
+            case "NONE":
+                pass
+            case "EMBOSS":
+                self.image = self.image.filter(ImageFilter.EMBOSS)
+            case "FIND EDGES":
+                self.image = self.image.filter(ImageFilter.FIND_EDGES)
+            case "CONTOUR":
+                self.image = self.image.filter(ImageFilter.CONTOUR)
+            case "EDGE ENHANCE":
+                self.image = self.image.filter(ImageFilter.EDGE_ENHANCE_MORE)
         # SHOW IMAGE.
         self.show_image()
 

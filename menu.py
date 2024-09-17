@@ -13,8 +13,8 @@ class Menu(ctk.CTkTabview):
         self.add("EXPORT")
         # FRAMES.
         PositionFrame(self.tab("POSITION"), binding_source["POSITION"])
-        ColourFrame(self.tab("COLOUR"))
-        EffectFrame(self.tab("EFFECT"))
+        ColourFrame(self.tab("COLOUR"), binding_source["COLOUR"])
+        EffectFrame(self.tab("EFFECT"), binding_source["EFFECT"])
         ExportFrame(self.tab("EXPORT"))
 
 
@@ -29,15 +29,27 @@ class PositionFrame(ctk.CTkFrame):
 
 
 class ColourFrame(ctk.CTkFrame):
-    def __init__(self, parent):
+    def __init__(self, parent, data_source):
         super().__init__(master=parent, fg_color="transparent")
         self.pack(expand=ctk.TRUE, fill=ctk.BOTH)
+        # WIDGETS.
+        SwitchPanel(
+            self,
+            ("B/W", data_source["GRAYSCALE"]),
+            ("INVERT", data_source["INVERT"]),
+        )
+        SliderPanel(self, "BRIGHTNESS", 0, 5, data_source["BRIGHTNESS"])
+        SliderPanel(self, "VIBRANCE", 0, 5, data_source["VIBRANCE"])
 
 
 class EffectFrame(ctk.CTkFrame):
-    def __init__(self, parent):
+    def __init__(self, parent, data_source):
         super().__init__(master=parent, fg_color="transparent")
         self.pack(expand=ctk.TRUE, fill=ctk.BOTH)
+        # WIDGETS.
+        DropDownPanel(self, EFFECT_OPTIONS, data_source["EFFECT"])
+        SliderPanel(self, "BLUR", 0, 3, data_source["BLUR"])
+        SliderPanel(self, "CONTRAST", 0, 10, data_source["CONTRAST"])
 
 
 class ExportFrame(ctk.CTkFrame):
