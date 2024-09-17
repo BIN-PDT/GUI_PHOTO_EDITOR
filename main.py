@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from os.path import join
+from os.path import join, exists
 from PIL import Image, ImageTk, ImageOps, ImageEnhance, ImageFilter
 from settings import *
 from widgets import *
@@ -26,16 +26,20 @@ class App(ctk.CTk):
         self.loader = ImageLoader(self, self.load_image)
 
     def load_image(self, path):
-        self.original = Image.open(path)
-        self.image = self.original.copy()
-        self.image_tk = ImageTk.PhotoImage(self.image)
-        self.image_ratio = self.image.width / self.image.height
-        # HIDE THE IMAGE LOADER.
-        self.loader.grid_forget()
-        # OPEN THE IMAGE EDITOR.
-        self.menu = Menu(self, self.binding_source, path, self.save_image)
-        self.editor = ImageEditor(self, self.resize_image)
-        self.closer = CloseEditor(self, self.close_editor)
+        try:
+            self.original = Image.open(path)
+        except:
+            pass
+        else:
+            self.image = self.original.copy()
+            self.image_tk = ImageTk.PhotoImage(self.image)
+            self.image_ratio = self.image.width / self.image.height
+            # HIDE THE IMAGE LOADER.
+            self.loader.grid_forget()
+            # OPEN THE IMAGE EDITOR.
+            self.editor = ImageEditor(self, self.resize_image)
+            self.menu = Menu(self, self.binding_source, path, self.save_image)
+            self.closer = CloseEditor(self, self.close_editor)
 
     def binding_data(self):
         # BINDING.
@@ -157,7 +161,16 @@ class App(ctk.CTk):
         self.loader = ImageLoader(self, self.load_image)
 
     def save_image(self, file_path, file_name, extension):
-        self.image.save(f"{join(file_path, file_name)}.{extension}")
+        # HANDLE NO FILE NAME.
+        file_name = file_name if file_name else "default"
+        path = f"{join(file_path, file_name)}.{extension}"
+        # HANDLE EXISTED FILE.
+        counter = 0
+        while exists(path):
+            counter += 1
+            path = f"{join(file_path, file_name)}_{counter}.{extension}"
+        # EXPORT IMAGE.
+        self.image.save(path)
 
 
 if __name__ == "__main__":
