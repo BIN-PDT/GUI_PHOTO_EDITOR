@@ -182,3 +182,34 @@ class FilePathPanel(Panel):
 
     def open_dialog(self):
         self.binding_file_path.set(ctk.filedialog.askdirectory())
+
+
+class SaveButton(ctk.CTkButton):
+    def __init__(
+        self,
+        parent,
+        binding_file_path,
+        binding_file_name,
+        binding_extension,
+        save_image,
+    ):
+        super().__init__(
+            master=parent,
+            height=32,
+            text="SAVE",
+            font=ctk.CTkFont(MAIN_FONT, 14),
+            command=self.download,
+        )
+        self.pack(side=ctk.BOTTOM, pady=10)
+        # DATA.
+        self.binding_file_path = binding_file_path
+        self.binding_file_name = binding_file_name
+        self.binding_extension = binding_extension
+        self.save_image = save_image
+
+    def download(self):
+        self.save_image(
+            self.binding_file_path.get(),
+            self.binding_file_name.get(),
+            self.binding_extension.get(),
+        )

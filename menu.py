@@ -4,7 +4,7 @@ from panels import *
 
 
 class Menu(ctk.CTkTabview):
-    def __init__(self, parent, binding_source, image_path):
+    def __init__(self, parent, binding_source, image_path, save_image):
         super().__init__(master=parent)
         self.grid(column=0, row=0, sticky=ctk.NSEW, padx=10, pady=10)
         # TABS.
@@ -16,7 +16,7 @@ class Menu(ctk.CTkTabview):
         PositionFrame(self.tab("POSITION"), binding_source["POSITION"])
         ColourFrame(self.tab("COLOUR"), binding_source["COLOUR"])
         EffectFrame(self.tab("EFFECT"), binding_source["EFFECT"])
-        ExportFrame(self.tab("EXPORT"), image_path)
+        ExportFrame(self.tab("EXPORT"), image_path, save_image)
 
 
 class PositionFrame(ctk.CTkFrame):
@@ -73,7 +73,7 @@ class EffectFrame(ctk.CTkFrame):
 
 
 class ExportFrame(ctk.CTkFrame):
-    def __init__(self, parent, image_path):
+    def __init__(self, parent, image_path, save_image):
         super().__init__(master=parent, fg_color="transparent")
         self.pack(expand=ctk.TRUE, fill=ctk.BOTH)
         # PATH PROCESS.
@@ -88,3 +88,10 @@ class ExportFrame(ctk.CTkFrame):
         # WIDGET.
         FileNamePanel(self, self.binding_file_name, self.binding_extension)
         FilePathPanel(self, self.binding_file_path)
+        SaveButton(
+            self,
+            self.binding_file_path,
+            self.binding_file_name,
+            self.binding_extension,
+            save_image,
+        )

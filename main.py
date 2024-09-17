@@ -1,4 +1,5 @@
 import customtkinter as ctk
+from os.path import join
 from PIL import Image, ImageTk, ImageOps, ImageEnhance, ImageFilter
 from settings import *
 from widgets import *
@@ -32,7 +33,7 @@ class App(ctk.CTk):
         # HIDE THE IMAGE LOADER.
         self.loader.grid_forget()
         # OPEN THE IMAGE EDITOR.
-        self.menu = Menu(self, self.binding_source, path)
+        self.menu = Menu(self, self.binding_source, path, self.save_image)
         self.editor = ImageEditor(self, self.resize_image)
         self.closer = CloseEditor(self, self.close_editor)
 
@@ -154,6 +155,9 @@ class App(ctk.CTk):
         self.closer.place_forget()
         # OPEN THE IMAGE LOADER.
         self.loader = ImageLoader(self, self.load_image)
+
+    def save_image(self, file_path, file_name, extension):
+        self.image.save(f"{join(file_path, file_name)}.{extension}")
 
 
 if __name__ == "__main__":
